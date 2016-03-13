@@ -1,0 +1,84 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+
+
+group = 'com.github.paulbicheler'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+
+jar {
+	baseName = 'gradle-template'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//sourceSets {
+//    main {
+//        java {
+//            srcDir 'src'
+//        }
+//        resources {
+//            srcDir 'src'
+//        }
+//    }
+//	
+//	test {
+//		java {
+//			srcDir 'test'
+//		}
+//		resources {
+//			srcDir 'test'
+//		}
+//	}
+//}
+
+repositories {
+	maven {
+		url './repo'
+	}
+	mavenCentral()
+}
+
+configurations {
+
+}
+
+
+dependencies {
+	testCompile 'junit:junit:4.12'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	
+	repositories {
+		maven {
+			name 'Local'
+			url "$buildDir/repo"
+		}
+	}
+}
+
+
+task wrapper(type: Wrapper) {
+	description = 'Generates gradlew[.bat] scripts'
+	group = 'build setup'
+	gradleVersion = '2.8'
+	jarFile = "${project.projectDir}/gradle-scripts/gradle-install/wrapper/gradle-wrapper.jar"
+	scriptFile = "${project.projectDir}/gradle-scripts/gradle-install/gradlew"
+//	archiveBase = 'Project'  
+//	archivePath = "${project.projectDir}/gradle-scripts/gradle-install/"
+}
